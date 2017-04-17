@@ -2,6 +2,15 @@
 
 ## Restful service
 
+Get 
+
+Post
+
+Login Manager
+
+Session Manager
+
+
 ## Visualization
 
 
