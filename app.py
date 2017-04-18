@@ -5,6 +5,9 @@ from flask import jsonify
 from flask import abort
 from flask import request
 import flask_login
+from OpenSSL import SSL
+import threading
+import os
 
 app = Flask(__name__)
 app.secret_key = 'I am Lucky'
@@ -102,7 +105,24 @@ def unauthorized_handler():
     return 'You are Unauthorized!'
 
 
-if __name__ == '__main__':
+
+
+def run_https_server():
+    context = ('./certificates/alice.crt', './certificates/alice.key')
     app.run(debug=True,
             host="0.0.0.0",
-            port=5521)
+            port=443,
+            ssl_context=context)
+
+def run_http_server():
+    app.run(debug=True,
+            host="0.0.0.0",
+            port=80)
+
+if __name__ == '__main__':
+    #print "https process..."
+    #run_https_server()
+
+    print "http process..."
+    run_http_server()
+    
