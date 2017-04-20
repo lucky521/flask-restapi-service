@@ -2,15 +2,16 @@
 
 ## Restful service
 
-Get 
-
-Post
+Get, Post
 
 Login Manager
 
 Session Manager
 
+HTTPS
 
-## Visualization
 
+## Restful File Store 
+
+Mongodb, GridFS
 
