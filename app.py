@@ -1,4 +1,5 @@
 #!flask/bin/python
+# import third-party component
 import flask
 from flask import Flask,json
 from flask import jsonify
@@ -8,6 +9,9 @@ import flask_login
 from OpenSSL import SSL
 import threading
 import os
+
+# import local component
+import file_db
 
 app = Flask(__name__)
 app.secret_key = 'I am Lucky'
@@ -51,6 +55,26 @@ def add_task():
 
 # delete one item
 
+
+
+
+# post binary to server
+@app.route('/image/restapi/post', methods=['POST'])
+def add_image():
+    # store binary to db  
+    print request.files['image'] # image_key is key of file
+    image_file = request.files['image']
+    image_id = file_db.put_file(image_file)    
+
+    return image_id
+
+
+# get binary from server
+@app.route('/image/restapi/get/<image_id>', methods=['GET'])
+def get_image(image_id): 
+    # get binary from db
+    
+    return flask.send_from_directory("./db", "lena.jpeg")
 
 
 
