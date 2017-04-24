@@ -9,12 +9,14 @@ import flask_login
 from OpenSSL import SSL
 import threading
 import os
+import hashlib
 
 # import local component
 import file_db
 
 app = Flask(__name__)
 app.secret_key = 'I am Lucky'
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 
 # root page
@@ -64,17 +66,20 @@ def add_image():
     # store binary to db  
     print request.files['image'] # image_key is key of file
     image_file = request.files['image']
-    image_id = file_db.put_file(image_file)    
+    image_file.save("./db/cache_file.jpg")
 
-    return image_id
+    hash_id = file_db.put_file()    
+    return hash_id
 
 
 # get binary from server
 @app.route('/image/restapi/get/<image_id>', methods=['GET'])
 def get_image(image_id): 
     # get binary from db
-    
-    return flask.send_from_directory("./db", "lena.jpeg")
+    re = file_db.get_file(image_id)
+    if re == -1:
+        abort(404)
+    return flask.send_from_directory("./db", "cache_file.jpg")
 
 
 
