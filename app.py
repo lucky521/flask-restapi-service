@@ -19,6 +19,8 @@ app.secret_key = 'I am Lucky'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 
+##############################################################################
+# Pages
 # root page
 @app.route('/')
 def index():
@@ -28,6 +30,11 @@ def index():
 @flask_login.login_required
 def root_fun():
     return "Hello, this is root"
+
+
+
+##############################################################################
+# Restful API
 
 # get json from server
 @app.route('/restapi/get/task/<int:uid>', methods=['GET'])
@@ -60,6 +67,10 @@ def add_task():
 
 
 
+##############################################################################
+# image store
+
+
 # post binary to server
 @app.route('/image/restapi/post', methods=['POST'])
 def add_image():
@@ -82,7 +93,20 @@ def get_image(image_id):
     return flask.send_from_directory("./db", "cache_file.jpg")
 
 
+# delete  binary from server
+@app.route('/image/restapi/del/<image_id>', methods=['GET'])
+@flask_login.login_required
+def del_image(image_id): 
+    # delete binary from db
+    re = file_db.del_file(image_id)
+    if re == -1:
+        return image_id + " not exist."
+    return image_id + " Del Done."
 
+    
+
+
+##############################################################################
 # User login
 login_manager = flask_login.LoginManager()
 login_manager.init_app(app)
@@ -102,6 +126,10 @@ def request_loader(request):
     user.id = request.form['name']
     user.is_authenticated = True
     return user
+
+@login_manager.unauthorized_handler
+def unauthorized():
+    return 'You are Unauthorized!'
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -129,12 +157,9 @@ def logout():
     flask_login.logout_user()
     return 'Logged out'
 
-@login_manager.unauthorized_handler
-def unauthorized_handler():
-    return 'You are Unauthorized!'
 
 
-
+##############################################################################
 
 def run_https_server():
     context = ('./certificates/alice.crt', './certificates/alice.key')

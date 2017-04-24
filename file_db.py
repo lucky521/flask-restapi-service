@@ -44,6 +44,8 @@ def put_file():
     return hash_id
 
 
-def del_file(fid):
-
-    return "del_file OK"
+def del_file(hash_id):
+    re = db.posts.delete_one({'_id':hash_id})
+    if re.deleted_count > 0:
+        return 1
+    return -1
