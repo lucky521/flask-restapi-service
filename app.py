@@ -75,6 +75,7 @@ def add_task():
 @app.route('/image/restapi/post', methods=['POST'])
 def add_image():
     # store binary to db  
+    print "Posting to server"
     print request.files['image'] # image_key is key of file
     image_file = request.files['image']
     image_file.save("./db/cache_file.jpg")
