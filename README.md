@@ -1,6 +1,6 @@
 # flask-restapi-service
 
-## Restful service
+## Restful Service
 
 Get, Post
 
@@ -10,8 +10,15 @@ Session Manager
 
 HTTPS
 
+OAuth
 
-## Restful File Store 
 
-Mongodb, GridFS
+## Restful File Store Service
 
+File Get & Post API
+
+    /image/restapi/post
+    /image/restapi/get/<file_hash>
+    /image/restapi/del/<file_hash>
+
+Mongodb

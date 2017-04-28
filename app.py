@@ -70,23 +70,22 @@ def add_task():
 ##############################################################################
 # image store
 
-
 # post binary to server
 @app.route('/image/restapi/post', methods=['POST'])
 def add_image():
-    # store binary to db  
+    # store binary to db
     print "Posting to server"
     print request.files['image'] # image_key is key of file
     image_file = request.files['image']
     image_file.save("./db/cache_file.jpg")
 
-    hash_id = file_db.put_file()    
+    hash_id = file_db.put_file()
     return hash_id
 
 
 # get binary from server
 @app.route('/image/restapi/get/<image_id>', methods=['GET'])
-def get_image(image_id): 
+def get_image(image_id):
     # get binary from db
     re = file_db.get_file(image_id)
     if re == -1:
@@ -97,14 +96,14 @@ def get_image(image_id):
 # delete  binary from server
 @app.route('/image/restapi/del/<image_id>', methods=['GET'])
 @flask_login.login_required
-def del_image(image_id): 
+def del_image(image_id):
     # delete binary from db
     re = file_db.del_file(image_id)
     if re == -1:
         return image_id + " not exist."
     return image_id + " Del Done."
 
-    
+
 
 
 ##############################################################################
@@ -145,7 +144,7 @@ def login():
     name = request.form['name']
     pw = request.form['pw']
     if name == 'lucky' and pw == 'lulu':
-         user = User() 
+         user = User()
          user.id = name
          flask_login.login_user(user)
          return "Welcome!"
@@ -180,4 +179,3 @@ if __name__ == '__main__':
 
     print "http process..."
     run_http_server()
-    
